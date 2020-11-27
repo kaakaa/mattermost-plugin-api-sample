@@ -18,6 +18,7 @@ import (
 // If you add non-reference types to your configuration struct, be sure to rewrite Clone as a deep
 // copy appropriate for your types.
 type configuration struct {
+	SampleSetting string
 }
 
 // Clone shallow copies the configuration. Your implementation may require a deep copy if
@@ -79,5 +80,6 @@ func (p *SamplePlugin) OnConfigurationChange() error {
 
 	p.setConfiguration(configuration)
 
+	p.API.LogDebug(configuration.SampleSetting)
 	return nil
 }

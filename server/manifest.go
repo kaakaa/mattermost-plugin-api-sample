@@ -31,7 +31,16 @@ const manifestStr = `
   "settings_schema": {
     "header": "",
     "footer": "",
-    "settings": []
+    "settings": [
+      {
+        "key": "SampleSetting",
+        "display_name": "Sample Setings Value",
+        "type": "text",
+        "help_text": "Sample",
+        "placeholder": "",
+        "default": "sample"
+      }
+    ]
   }
 }
 `
