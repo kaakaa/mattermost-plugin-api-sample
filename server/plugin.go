@@ -48,7 +48,7 @@ func (p *SamplePlugin) OnActivate() error {
 }
 
 func (p *SamplePlugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*model.CommandResponse, *model.AppError) {
-	return &model.CommandResponse{}, nil
+	return &model.CommandResponse{Text: "Hello by plugin"}, nil
 }
 
 // ServeHTTP demonstrates a plugin that handles HTTP requests by greeting the world.
