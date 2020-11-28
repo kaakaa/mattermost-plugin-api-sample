@@ -71,4 +71,15 @@ func (p *SamplePlugin) UserHasBeenCreated(c *plugin.Context, user *model.User) {
 	}
 }
 
+func (p *SamplePlugin) UserWillLogIn(c *plugin.Context, user *model.User) string {
+	if err := p.check(); err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+func (p *SamplePlugin) check() error {
+	return nil // fmt.Errorf("hogehoge")
+}
+
 // See https://developers.mattermost.com/extend/plugins/server/reference/
