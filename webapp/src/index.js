@@ -7,6 +7,7 @@ import UserAttributes from './components/user_attributes';
 import UserAction from './components/user_action';
 import LeftSidebarHeader from './components/left_sidebar_header';
 import BottomTeamSidebar from './components/bottom_team_sidebar';
+import LinkTooltip from './components/link_tooltip';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -32,6 +33,9 @@ export default class Plugin {
 
         // チーム選択サイドバーの下部に表示されるComponentの登録
         registry.registerBottomTeamSidebarComponent(BottomTeamSidebar);
+
+        // リンクをhoverした時に表示されるTooltipとして表示されるComponentの登録
+        registry.registerLinkTooltipComponent(LinkTooltip);
 
         registry.registerReducer(reducer);
     }

@@ -9,7 +9,7 @@ const UserActionComponent = ({openRootModal}) => {
     )
 };
 
-UserActionComponent.PropTypes = {
+UserActionComponent.propTypes = {
     openRootModal: PropTypes.func.isRequired,
 };
 
