@@ -6,6 +6,7 @@ import Root from './components/root';
 import UserAttributes from './components/user_attributes';
 import UserAction from './components/user_action';
 import LeftSidebarHeader from './components/left_sidebar_header';
+import BottomTeamSidebar from './components/bottom_team_sidebar';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -21,13 +22,16 @@ export default class Plugin {
         );
 
         // User Popoverに説明を追加するComponentの登録
-        registry.registerPopoverUserAttributesComponent(UserAttributes)
+        registry.registerPopoverUserAttributesComponent(UserAttributes);
 
         // User Popoverにアクションを追加するComponentの登録
-        registry.registerPopoverUserActionsComponent(UserAction)
+        registry.registerPopoverUserActionsComponent(UserAction);
 
         // 左サイドバーの上部に表示されるComponentの登録
-        registry.registerLeftSidebarHeaderComponent(LeftSidebarHeader)
+        registry.registerLeftSidebarHeaderComponent(LeftSidebarHeader);
+
+        // チーム選択サイドバーの下部に表示されるComponentの登録
+        registry.registerBottomTeamSidebarComponent(BottomTeamSidebar);
 
         registry.registerReducer(reducer);
     }
