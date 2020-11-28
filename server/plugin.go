@@ -2,6 +2,13 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/color"
+	"image/draw"
+	_ "image/jpeg"
+	"image/png"
+	_ "image/png"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -163,6 +170,32 @@ func (p *SamplePlugin) UserHasJoinedChannel(c *plugin.Context, channelMember *mo
 		UserId:    p.botUserID,
 		Message:   fmt.Sprintf("This chanels is for XXX user. You'd better to read [notes for this channel](%s).", UrlForNotes),
 	})
+}
+
+func (p *SamplePlugin) FileWillBeUploaded(c *plugin.Context, info *model.FileInfo, file io.Reader, output io.Writer) (*model.FileInfo, string) {
+	if info.IsImage() {
+		// Decode original image
+		img, _, err := image.Decode(file)
+		if err != nil {
+			p.API.LogWarn("failed to decode uploaded image", "details", err.Error())
+			return nil, ""
+		}
+		// Draw original image
+		base := image.NewRGBA(image.Rect(0, 0, img.Bounds().Dx(), img.Bounds().Dy()))
+		draw.Draw(base, base.Bounds(), img, image.ZP, draw.Src)
+
+		// Create green filter
+		src := image.NewRGBA(image.Rect(0, 0, img.Bounds().Dx(), img.Bounds().Dy()))
+		draw.Draw(src, src.Bounds(), &image.Uniform{color.RGBA{255, 128, 255, 128}}, image.ZP, draw.Src)
+
+		// Mask original image
+		mask := image.Rect(25, 25, base.Bounds().Dx()-25, base.Bounds().Dy()-25)
+		draw.DrawMask(base, base.Bounds(), src, image.ZP, mask, image.ZP, draw.Over)
+
+		// Write masked image
+		png.Encode(output, base)
+	}
+	return info, ""
 }
 
 // See https://developers.mattermost.com/extend/plugins/server/reference/
