@@ -125,4 +125,30 @@ func (p *SamplePlugin) MessageHasBeenPosted(c *plugin.Context, post *model.Post)
 	}
 }
 
+func (p *SamplePlugin) ChannelHasBeenCreated(c *plugin.Context, channel *model.Channel) {
+	if channel.Type != model.CHANNEL_OPEN {
+		return
+	}
+
+	u, appErr := p.API.GetUser(channel.CreatorId)
+	if appErr != nil {
+		p.API.LogError("Failed to get user", "details", appErr)
+		return
+	}
+	townSquare, appErr := p.API.GetChannelByName(channel.TeamId, model.DEFAULT_CHANNEL, false)
+	if appErr != nil {
+		p.API.LogError("Failed to get channel", "details", appErr)
+		return
+	}
+
+	if _, appErr := p.API.CreatePost(&model.Post{
+		Type:      model.POST_DEFAULT,
+		ChannelId: townSquare.Id,
+		UserId:    p.botUserID,
+		Message:   fmt.Sprintf("Channel ~%s has been created by %s.", channel.Name, u.GetDisplayName(model.SHOW_USERNAME)),
+	}); appErr != nil {
+		p.API.LogError("Failed to create post", "details", appErr)
+	}
+}
+
 // See https://developers.mattermost.com/extend/plugins/server/reference/
