@@ -1,6 +1,6 @@
 import manifest from './manifest';
 
-import {openRootModal} from './actions';
+import {openRootModal, createPluginPost} from './actions';
 import reducer from './reducer';
 import Root from './components/root';
 import UserAttributes from './components/user_attributes';
@@ -17,7 +17,7 @@ export default class Plugin {
 
         // Root Componentを呼び出すアクションの登録
         registry.registerChannelHeaderButtonAction(
-            channelHeaderButtonIcon,
+            () => (<i className='icon fa fa-plug' style={{fontSize: '15px', position: 'relative', top: '-1px'}}/>),
             () => store.dispatch(openRootModal()),
             "Open Root modal","Open Root modal"
         );
@@ -36,6 +36,13 @@ export default class Plugin {
 
         // リンクをhoverした時に表示されるTooltipとして表示されるComponentの登録
         registry.registerLinkTooltipComponent(LinkTooltip);
+
+        // 投稿を作成するチャンネルヘッダボタンを登録
+        registry.registerChannelHeaderButtonAction(
+            () => (<i className='icon fa fa-commenting-o' style={{fontSize: '15px', position: 'relative', top: '-1px'}}/>),
+            (channel, channelMembers) => store.dispatch(createPluginPost(channel.id)),
+            "Create Sample Post", "Create Sample Post"
+        );
 
         registry.registerReducer(reducer);
     }
