@@ -56,4 +56,19 @@ func (p *SamplePlugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *ht
 	fmt.Fprint(w, "Hello, world!")
 }
 
+func (p *SamplePlugin) UserHasBeenCreated(c *plugin.Context, user *model.User) {
+	channel, appErr := p.API.GetDirectChannel(p.botUserID, user.Id)
+	if appErr != nil {
+		p.API.LogWarn("failed to get direct channel", "user_id1", p.botUserID, "user_id2", user.Id, "details", appErr.Error())
+		return
+	}
+	if _, appErr := p.API.CreatePost(&model.Post{
+		ChannelId: channel.Id,
+		UserId:    p.botUserID,
+		Message:   "Welcome to our Mattermost!",
+	}); appErr != nil {
+		p.API.LogWarn("failed to create welcome post.", "channel_id", channel.Id, "details", appErr.Error())
+	}
+}
+
 // See https://developers.mattermost.com/extend/plugins/server/reference/
