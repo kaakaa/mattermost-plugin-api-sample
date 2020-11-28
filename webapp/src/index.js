@@ -8,6 +8,7 @@ import UserAction from './components/user_action';
 import LeftSidebarHeader from './components/left_sidebar_header';
 import BottomTeamSidebar from './components/bottom_team_sidebar';
 import LinkTooltip from './components/link_tooltip';
+import CustomPost from './components/custom_post';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -43,6 +44,9 @@ export default class Plugin {
             (channel, channelMembers) => store.dispatch(createPluginPost(channel.id)),
             "Create Sample Post", "Create Sample Post"
         );
+
+        // type: custom_sample_post を持つ投稿をレンダリングするComponentの登録
+        registry.registerPostTypeComponent('custom_sample_post', CustomPost);
 
         registry.registerReducer(reducer);
     }
