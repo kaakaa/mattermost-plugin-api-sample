@@ -5,6 +5,7 @@ import reducer from './reducer';
 import Root from './components/root';
 import UserAttributes from './components/user_attributes';
 import UserAction from './components/user_action';
+import LeftSidebarHeader from './components/left_sidebar_header';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -24,6 +25,9 @@ export default class Plugin {
 
         // User Popoverにアクションを追加するComponentの登録
         registry.registerPopoverUserActionsComponent(UserAction)
+
+        // 左サイドバーの上部に表示されるComponentの登録
+        registry.registerLeftSidebarHeaderComponent(LeftSidebarHeader)
 
         registry.registerReducer(reducer);
     }
