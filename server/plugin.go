@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/mattermost/mattermost-server/v5/model"
 	"github.com/mattermost/mattermost-server/v5/plugin"
@@ -80,6 +81,29 @@ func (p *SamplePlugin) UserWillLogIn(c *plugin.Context, user *model.User) string
 
 func (p *SamplePlugin) check() error {
 	return nil // fmt.Errorf("hogehoge")
+}
+
+func (p *SamplePlugin) UserHasLoggedIn(c *plugin.Context, user *model.User) {
+	status, appErr := p.API.GetUserStatus(user.Id)
+	if appErr != nil {
+		p.API.LogWarn("failed to get user status", "user_id", user.Id, "details", appErr.Error())
+		return
+	}
+	t := time.Unix(status.LastActivityAt/1000, status.LastActivityAt%1000)
+	if status.Status == model.STATUS_OFFLINE && time.Now().After(t.AddDate(0, 0, 7)) {
+		channel, appErr := p.API.GetDirectChannel(p.botUserID, user.Id)
+		if appErr != nil {
+			p.API.LogWarn("failed to get direct channel", "user_id1", p.botUserID, "user_id2", user.Id, "details", appErr.Error())
+			return
+		}
+		if _, appErr := p.API.CreatePost(&model.Post{
+			ChannelId: channel.Id,
+			UserId:    p.botUserID,
+			Message:   "Hi! :wave:",
+		}); appErr != nil {
+			p.API.LogWarn("failed to create post.", "channel_id", channel.Id, "details", appErr.Error())
+		}
+	}
 }
 
 // See https://developers.mattermost.com/extend/plugins/server/reference/
