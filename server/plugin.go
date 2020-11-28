@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
@@ -104,6 +105,13 @@ func (p *SamplePlugin) UserHasLoggedIn(c *plugin.Context, user *model.User) {
 			p.API.LogWarn("failed to create post.", "channel_id", channel.Id, "details", appErr.Error())
 		}
 	}
+}
+
+func (p *SamplePlugin) MessageWillBePosted(c *plugin.Context, post *model.Post) (*model.Post, string) {
+	if strings.Contains(post.Message, "shit") || strings.Contains(post.Message, "💩") {
+		return nil, "You can't use 💩 on this server."
+	}
+	return nil, ""
 }
 
 // See https://developers.mattermost.com/extend/plugins/server/reference/
