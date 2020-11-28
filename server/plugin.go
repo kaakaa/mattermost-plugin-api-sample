@@ -151,4 +151,18 @@ func (p *SamplePlugin) ChannelHasBeenCreated(c *plugin.Context, channel *model.C
 	}
 }
 
+var UrlForNotes = "https://github.com"
+var TargetChannelID = "su7w9z51atnspjufg1c73ijx8w"
+
+func (p *SamplePlugin) UserHasJoinedChannel(c *plugin.Context, channelMember *model.ChannelMember, actor *model.User) {
+	if channelMember.ChannelId != TargetChannelID {
+		return
+	}
+	p.API.SendEphemeralPost(channelMember.UserId, &model.Post{
+		ChannelId: channelMember.ChannelId,
+		UserId:    p.botUserID,
+		Message:   fmt.Sprintf("This chanels is for XXX user. You'd better to read [notes for this channel](%s).", UrlForNotes),
+	})
+}
+
 // See https://developers.mattermost.com/extend/plugins/server/reference/
