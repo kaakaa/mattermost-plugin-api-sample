@@ -114,4 +114,15 @@ func (p *SamplePlugin) MessageWillBePosted(c *plugin.Context, post *model.Post) 
 	return nil, ""
 }
 
+func (p *SamplePlugin) MessageHasBeenPosted(c *plugin.Context, post *model.Post) {
+	postUrl := fmt.Sprintf("http://localhost:8065/_redirect/pl/%s", post.Id)
+	if strings.Contains(post.Message, "mattermost") && post.UserId != p.botUserID {
+		p.API.CreatePost(&model.Post{
+			Message:   fmt.Sprintf("Post refered to `mattermost` is created. See [here](%s) ", postUrl),
+			UserId:    p.botUserID,
+			ChannelId: "su7w9z51atnspjufg1c73ijx8w",
+		})
+	}
+}
+
 // See https://developers.mattermost.com/extend/plugins/server/reference/
