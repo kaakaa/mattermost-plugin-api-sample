@@ -1,11 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const UserAttributes = () => {
+const UserAttributes = ({user, hide, status}) => {
+    console.log("user", user.id);
     return (
         <div>
-            <p>User Attributes</p>
+            <p>{'UserId: ' + user.id}</p>
         </div>
     );
 }
+
+UserAttributes.propTypes = {
+    user: PropTypes.object.isRequired,
+    hide: PropTypes.func.isRequired,
+    status: PropTypes.object.isRequired,
+};
 
 export default UserAttributes;
