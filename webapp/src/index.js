@@ -156,6 +156,23 @@ export default class Plugin {
                 return {post: post};
             }
         );
+
+        registry.registerSlashCommandWillBePostedHook(
+            (message, args) => {
+                console.log(message);
+                if (message.startsWith('/away')) {
+                    return {error: {message: 'rejected'}};
+                }
+                if (message.startsWith('/help')) {
+                    console.log('help');
+                    return {message: '/shrug converted from help command', args};
+                }
+                if (message.startsWith('/leave')) {
+                    console.log('leave');
+                    return {};
+                }
+            }
+        );
     }
 }
 
