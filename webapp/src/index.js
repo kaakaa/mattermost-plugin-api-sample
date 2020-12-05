@@ -9,6 +9,7 @@ import LeftSidebarHeader from './components/left_sidebar_header';
 import BottomTeamSidebar from './components/bottom_team_sidebar';
 import LinkTooltip from './components/link_tooltip';
 import CustomPost from './components/custom_post';
+import CustomCard from './components/custom_card';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -47,6 +48,9 @@ export default class Plugin {
 
         // type: custom_sample_post を持つ投稿をレンダリングするComponentの登録
         registry.registerPostTypeComponent('custom_sample_post', CustomPost);
+
+        // type: custom_sample_card を持つ投稿をレンダリングするComponentの登録
+        registry.registerPostCardTypeComponent('custom_sample_card', CustomCard);
 
         registry.registerReducer(reducer);
     }
