@@ -145,6 +145,17 @@ export default class Plugin {
                 }
             }
         );
+
+        // 投稿がサーバーに送信される前にrejectしたり内容を変換したりする
+        registry.registerMessageWillBePostedHook(
+            (post) => {
+                if (post.message && post.message.includes('忙しい')) {
+                    return {error: {message: '忙しくはないはずです'}};
+                }
+                post.message = post.message.replace(/帰りたい/gi, '仕事したい');
+                return {post: post};
+            }
+        );
     }
 }
 
