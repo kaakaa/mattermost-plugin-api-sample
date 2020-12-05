@@ -12,6 +12,7 @@ import CustomPost from './components/custom_post';
 import CustomCard from './components/custom_card';
 import CustomEmbed from './components/custom_embed';
 import CustomPostDropdown from './components/custom_post_dropdown';
+import CustomFilePreview from './components/custom_file_preview';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -157,6 +158,7 @@ export default class Plugin {
             }
         );
 
+        // Slash Commandがサーバーに送信される前に実行される処理を追加する
         registry.registerSlashCommandWillBePostedHook(
             (message, args) => {
                 console.log(message);
@@ -173,6 +175,13 @@ export default class Plugin {
                 }
             }
         );
+
+        // `debug`で始まるメッセージを持つ投稿の添付ファイルを独自コンポーネントでプレビューする
+        registry.registerFilePreviewComponent(
+            (fileInfo, post) => { return post.message && post.message.startsWith('debug'); },
+            CustomFilePreview
+        );
+
     }
 }
 
