@@ -10,6 +10,7 @@ import BottomTeamSidebar from './components/bottom_team_sidebar';
 import LinkTooltip from './components/link_tooltip';
 import CustomPost from './components/custom_post';
 import CustomCard from './components/custom_card';
+import CustomEmbed from './components/custom_embed';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -51,6 +52,13 @@ export default class Plugin {
 
         // type: custom_sample_card を持つ投稿をレンダリングするComponentの登録
         registry.registerPostCardTypeComponent('custom_sample_card', CustomCard);
+
+        // 投稿に含まれるURLのプレビューをレンダリングするComponentの登録
+        registry.registerPostWillRenderEmbedComponent(
+            (embed) => embed.url.startsWith(`https://github.com/mattermost/`),
+            CustomEmbed,
+            true
+        );
 
         registry.registerReducer(reducer);
     }
