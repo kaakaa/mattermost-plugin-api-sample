@@ -73,6 +73,13 @@ export default class Plugin {
             (chnnelId) => store.dispatch(openRootModal())
         );
 
+        // 投稿に対するドロップダウンメニューに独自メニューを追加する
+        registry.registerPostDropdownMenuAction(
+            <i className='icon fa fa-plug' style={{fontSize: '15px'}}>{'Sample Post Menu'}</i>,
+            (postId) => store.dispatch(openRootModal()),
+            (postId) => { return true; }
+        );
+
         registry.registerReducer(reducer);
     }
 }
