@@ -13,8 +13,6 @@ import CustomCard from './components/custom_card';
 import CustomEmbed from './components/custom_embed';
 import CustomPostDropdown from './components/custom_post_dropdown';
 
-import SampleFile from './avatar.png'
-
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
     initialize(registry, store) {
@@ -124,15 +122,29 @@ export default class Plugin {
             };
         });
 
-        // メインメニューを追加する
+        // プラグインによって登録されたコンポーネントを登録から除外する
         registry.registerMainMenuAction(
             'Unregister LeftSideberHeader',
             () => registry.unregisterComponent(leftSidebarHeaderComponentId),
             () => (<i className='icon fa fa-plug' style={{fontSize: '15px', position: 'relative', top: '-1px'}}/>)
         );
 
+        // 省略
+        // unregisterPostTypeComponent
 
+        // Reducerを登録する
         registry.registerReducer(reducer);
+
+        // 'open modal'を含む投稿を受信するとモーダルを開く
+        registry.registerWebSocketEventHandler(
+            'posted',
+            (event) => {
+                const post = JSON.parse(event.data.post);
+                if (post && post.message && post.message.includes('open modal')) {
+                    store.dispatch(openRootModal());
+                }
+            }
+        );
     }
 }
 
