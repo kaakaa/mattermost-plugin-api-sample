@@ -13,6 +13,8 @@ import CustomCard from './components/custom_card';
 import CustomEmbed from './components/custom_embed';
 import CustomPostDropdown from './components/custom_post_dropdown';
 
+import SampleFile from './avatar.png'
+
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
     initialize(registry, store) {
@@ -98,6 +100,16 @@ export default class Plugin {
 
         // 投稿に対するドロップダウンメニューにコンポーネントを登録する
         registry.registerPostDropdownMenuComponent(CustomPostDropdown);
+
+        // ファイルアップロードメニューを追加する
+        registry.registerFileUploadMethod(
+            <i className='icon fa fa-pencil-square-o' style={{fontSize: '15px'}}/>,
+            (upload) => upload([
+                new File(["test1"], "sample1.txt"),
+                new File(["test2"], 'sample2.txt')
+            ]),
+            'Sample File Upload'
+        );
 
         registry.registerReducer(reducer);
     }
