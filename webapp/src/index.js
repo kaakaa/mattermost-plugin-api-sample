@@ -80,6 +80,21 @@ export default class Plugin {
             (postId) => { return true; }
         );
 
+        // 投稿に対するサブメニュー付きのドロップダウンメニューを追加する
+        const {id, rootRegisterMenuItem} = registry.registerPostDropdownSubMenuAction(
+            <i className='icon fa fa-plug' style={{fontSize: '15px'}}>{'Sample SubMenu'}</i>,
+            (postId) => store.dispatch(openRootModal()),  // 実行されない
+            (postId) => { return true; }
+        );
+        rootRegisterMenuItem(
+            <i className='icon fa fa-plug' style={{fontSize: '15px'}}>{'SubMenu 1'}</i>,
+            (postId) => store.dispatch(openRootModal()),
+        );
+        rootRegisterMenuItem(
+            <i className='icon fa fa-plug' style={{fontSize: '15px'}}>{'SubMenu 2'}</i>,
+            (postId) => store.dispatch(openRootModal())
+        );
+
         registry.registerReducer(reducer);
     }
 }
