@@ -35,7 +35,7 @@ export default class Plugin {
         registry.registerPopoverUserActionsComponent(UserAction);
 
         // 左サイドバーの上部に表示されるComponentの登録
-        registry.registerLeftSidebarHeaderComponent(LeftSidebarHeader);
+        const leftSidebarHeaderComponentId = registry.registerLeftSidebarHeaderComponent(LeftSidebarHeader);
 
         // チーム選択サイドバーの下部に表示されるComponentの登録
         registry.registerBottomTeamSidebarComponent(BottomTeamSidebar);
@@ -58,7 +58,7 @@ export default class Plugin {
 
         // 投稿に含まれるURLのプレビューをレンダリングするComponentの登録
         registry.registerPostWillRenderEmbedComponent(
-            (embed) => embed.url.startsWith(`https://github.com/mattermost/`),
+            (embed) => embed.url && embed.url.startsWith(`https://github.com/mattermost/`),
             CustomEmbed,
             true
         );
@@ -110,6 +110,27 @@ export default class Plugin {
             ]),
             'Sample File Upload'
         );
+
+        // ファイルアップロード時の処理を登録する
+        registry.registerFilesWillUploadHook((files, upload) => {
+            let msg = '';
+            if (files.length >= 2 ) {
+                files = null;
+                msg = 'Must upload one by one.';
+            }
+            return {
+                message: msg,
+                files: files,
+            };
+        });
+
+        // メインメニューを追加する
+        registry.registerMainMenuAction(
+            'Unregister LeftSideberHeader',
+            () => registry.unregisterComponent(leftSidebarHeaderComponentId),
+            () => (<i className='icon fa fa-plug' style={{fontSize: '15px', position: 'relative', top: '-1px'}}/>)
+        );
+
 
         registry.registerReducer(reducer);
     }
