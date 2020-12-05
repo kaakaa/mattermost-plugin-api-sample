@@ -60,6 +60,13 @@ export default class Plugin {
             true
         );
 
+        // メインメニューを追加する
+        registry.registerMainMenuAction(
+            'Sample Main Menu',
+            () => store.dispatch(openRootModal()),
+            () => (<i className='icon fa fa-plug' style={{fontSize: '15px', position: 'relative', top: '-1px'}}/>)
+        );
+
         registry.registerReducer(reducer);
     }
 }
