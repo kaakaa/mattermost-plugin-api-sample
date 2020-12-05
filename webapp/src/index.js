@@ -11,6 +11,7 @@ import LinkTooltip from './components/link_tooltip';
 import CustomPost from './components/custom_post';
 import CustomCard from './components/custom_card';
 import CustomEmbed from './components/custom_embed';
+import CustomPostDropdown from './components/custom_post_dropdown';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -94,6 +95,9 @@ export default class Plugin {
             <i className='icon fa fa-plug' style={{fontSize: '15px'}}>{'SubMenu 2'}</i>,
             (postId) => store.dispatch(openRootModal())
         );
+
+        // 投稿に対するドロップダウンメニューにコンポーネントを登録する
+        registry.registerPostDropdownMenuComponent(CustomPostDropdown);
 
         registry.registerReducer(reducer);
     }
