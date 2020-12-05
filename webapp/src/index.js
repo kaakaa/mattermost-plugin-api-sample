@@ -67,6 +67,12 @@ export default class Plugin {
             () => (<i className='icon fa fa-plug' style={{fontSize: '15px', position: 'relative', top: '-1px'}}/>)
         );
 
+        // チャンネル名をクリックした際に表示されるメニューに独自メニューを追加する
+        registry.registerChannelHeaderMenuAction(
+            <i className='icon fa fa-plug' style={{fontSize: '15px', position: 'relative', top: '-1px'}}>{'Sample Menu'}</i>,
+            (chnnelId) => store.dispatch(openRootModal())
+        );
+
         registry.registerReducer(reducer);
     }
 }
