@@ -14,6 +14,8 @@ import CustomEmbed from './components/custom_embed';
 import CustomPostDropdown from './components/custom_post_dropdown';
 import CustomFilePreview from './components/custom_file_preview';
 import CustomSettings from './components/custom_settings';
+import CustomRightHandSideber from './components/custom_rhs';
+
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
     initialize(registry, store) {
@@ -188,6 +190,16 @@ export default class Plugin {
             CustomSettings,
             {showTitle: true}
         );
+
+        // 右サイドバーに表示される独自Componentを登録する
+        const {toggleRHSPlugin} = registry.registerRightHandSidebarComponent(CustomRightHandSideber, "Sample RHS")
+        // 右サイドバーを表示するためのメインメニューを追加する
+        registry.registerMainMenuAction(
+            'Open RHS',
+            () => store.dispatch(toggleRHSPlugin),
+            () => (<i/>)
+        );
+
     }
 }
 
