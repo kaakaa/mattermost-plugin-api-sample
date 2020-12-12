@@ -15,6 +15,7 @@ import CustomPostDropdown from './components/custom_post_dropdown';
 import CustomFilePreview from './components/custom_file_preview';
 import CustomSettings from './components/custom_settings';
 import CustomRightHandSideber from './components/custom_rhs';
+import CustomTeamRoute from './components/custom_team_route';
 
 export default class Plugin {
     // eslint-disable-next-line no-unused-vars
@@ -199,6 +200,9 @@ export default class Plugin {
             () => store.dispatch(toggleRHSPlugin),
             () => (<i/>)
         );
+
+        // チームごとに独自のRouteを追加する
+        registry.registerNeedsTeamRoute('/', CustomTeamRoute)
 
     }
 }
