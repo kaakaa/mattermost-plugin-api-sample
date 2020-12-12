@@ -1,6 +1,8 @@
 
 import React from 'react';
 
+import {FormattedMessage} from 'react-intl';
+
 const Root = ({visible, close}) => {
     if (!visible) {
         return null;
@@ -14,7 +16,10 @@ const Root = ({visible, close}) => {
             onClick={close}
         >
             <div style={style.modal}>
-                <p>Root modal</p>
+                <FormattedMessage
+                    id='rootModal.message'
+                    defaultMessage='Root Modal2'
+                />
             </div>
         </div>
     );

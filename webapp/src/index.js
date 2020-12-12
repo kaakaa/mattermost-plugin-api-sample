@@ -1,5 +1,9 @@
 import manifest from './manifest';
 
+
+import en from 'i18n/en.json';
+import ja from 'i18n/ja.json';
+
 import {openRootModal, createPluginPost} from './actions';
 import reducer from './reducer';
 import Root from './components/root';
@@ -184,6 +188,19 @@ export default class Plugin {
             (fileInfo, post) => { return post.message && post.message.startsWith('debug'); },
             CustomFilePreview
         );
+
+        registry.registerTranslations((locale) => {
+            console.log('locale', locale);
+            console.log(ja);
+            switch (locale) {
+            case 'en':
+                return en;
+            case 'ja':
+                console.log('registered');
+                return ja;
+            }
+            return {};
+        });
 
         // 独自の設定画面項目を追加する
         registry.registerAdminConsoleCustomSetting(
