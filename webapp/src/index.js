@@ -204,6 +204,8 @@ export default class Plugin {
         // チームごとに独自のRouteを追加する
         registry.registerNeedsTeamRoute('/', CustomTeamRoute)
 
+        // 独自のRouteを追加する
+        registry.registerCustomRoute('/', CustomTeamRoute)
     }
 }
 
